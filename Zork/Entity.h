@@ -14,6 +14,7 @@ enum Type {
 
 class Entity {
 public:
+	Entity();
 	Entity(const char* name, const char* desc, Entity* parent);
 	virtual ~Entity();
 
@@ -22,5 +23,7 @@ public:
 	string desc;
 
 	Entity* parent;
-	list<Entity*> container;
+	list<Entity*> container; //An entity  can be a chest, so it can contain other entities
+
+	virtual void Update();
 };

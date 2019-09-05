@@ -1,6 +1,6 @@
 #pragma once
-
-class Room {
+#include "Entity.h"
+class Room : public Entity {
 
 public:
 public:
