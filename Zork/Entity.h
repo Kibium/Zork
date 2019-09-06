@@ -21,9 +21,8 @@ public:
 	Type type;
 	string name;
 	string desc;
-
 	Entity* parent;
-	list<Entity*> container; //An entity  can be a chest, so it can contain other entities
+	list<Entity*> container;
 
 	virtual void Update();
 };

@@ -1,0 +1,9 @@
+﻿  Entity.cpp
+  Item.cpp
+  Main.cpp
+c:\users\gt73evr\source\repos\kibium\zork\zork\main.cpp(9): warning C4101: 'key': variable local sin referencia
+  Player.cpp
+  Room.cpp
+  World.cpp
+  Generando código...
+  Zork.vcxproj -> C:\Users\GT73EVR\source\repos\Kibium\Zork\x64\Debug\Zork.exe

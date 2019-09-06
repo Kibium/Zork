@@ -3,6 +3,7 @@
 
 enum ItemType {
 	NORMAL,
+	CHEST,
 	WEAPON,
 	ARMOR
 	
@@ -10,7 +11,6 @@ enum ItemType {
 
 class Item : public Entity {
 public:
-	Item(const char* name, const char* desc, Entity* parent, ItemType type);
 	Item(const char* name, const char* desc, Entity* parent, ItemType type, int buy, int sell);
 	~Item()	{}
 
