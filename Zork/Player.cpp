@@ -1,17 +1,16 @@
 #include "Player.h"
 
-void Player::Attack(const char* target) {
+Player::Player(const char* theName, const char* theDesc, Room* room) {
+
+	name = theName;
+	desc = theDesc;
+	parent = room;
+
+	status = HEALTHY;
+	weapon = nullptr;
+	armor = nullptr;
 
 }
 
-void Player::Move(const char* target) {
+Player::~Player(){}
 
-}
-
-void Player::Open(const char* target) {
-
-}
-
-void Player::Pick(const char* target) {
-
-}

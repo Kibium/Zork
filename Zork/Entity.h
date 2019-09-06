@@ -8,15 +8,18 @@ enum Type {
 	ROOM,
 	ITEM,
 	EXIT,
-	MONSTER,
+	DOOR,
+	CREATURE,
 	PLAYER
 };
 
 class Entity {
 public:
 	Entity();
-	Entity(const char* name, const char* desc, Entity* parent);
+	Entity(const char*, const char*, Entity*);
 	virtual ~Entity();
+
+	Entity* Find(Entity* entity);
 
 	Type type;
 	string name;
