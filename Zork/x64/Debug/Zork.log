@@ -1,6 +1,2 @@
-﻿  Main.cpp
-c:\users\gt73evr\source\repos\kibium\zork\zork\main.cpp(10): warning C4101: 'key': variable local sin referencia
-  Utils.cpp
-c:\users\gt73evr\source\repos\kibium\zork\zork\utils.cpp(21): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-  Generando código...
-  Zork.vcxproj -> C:\Users\GT73EVR\source\repos\Kibium\Zork\x64\Debug\Zork.exe
+﻿  Creature.cpp
+c:\users\gt73evr\source\repos\kibium\zork\zork\creature.cpp(62): error C2059: error de sintaxis: ')'

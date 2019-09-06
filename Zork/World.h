@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <list>
-#include "Entity.h"
+#include <vector>
+#include "Player.h"
+
 
 using namespace std;
 
@@ -11,8 +13,9 @@ public:
 	~World();
 
 	string name;
-	void GameLoop();
+	void GameLoop(string, vector<string>);
 
 private:
 	list<Entity*> entities;
+	Player* player;
 };

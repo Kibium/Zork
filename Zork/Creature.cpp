@@ -54,15 +54,49 @@ void Creature::ChangeParent(Entity* newParent) {
 	parent = newParent;
 }
 
-void Creature::Go(Room* newRoom) {
+void Creature::Go(string roomName) {
 
+	cout << "arriba aqui";
 
-	if (type == PLAYER)
+	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
+		//if ((*i)->name == roomName && (*))
+		//	ChangeParent(*i);
+	}
+
+	cout << "i aqui" << endl;
+
+	/*if (type == PLAYER)
+		cout << "You went to " << parent->name << endl;
+	else
+		cout << name << " went to " << parent->name << endl;
+
+	/*if (type == PLAYER)
 		cout << "You went to " << newRoom->name << endl;
 	else
 		cout << name << " went to " << newRoom->name << endl;
 	
 	parent = newRoom;
+	*/
+	
+}
 
+void Creature::Look(string a) {
+
+}
+
+void Creature::CheckStatus() {
+
+	switch (status) {
+	case NORMAL:
+		cout << "Status: Healthy" << endl;
+		break;
+	case POISONED:
+		cout << "Status: Poisoned" << endl;
+		break;
+
+	case DEAD:
+		cout << "Status: Dead" << endl;
+
+	}
 	
 }

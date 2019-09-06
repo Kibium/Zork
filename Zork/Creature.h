@@ -24,10 +24,11 @@ public:
 	void Die();
 	void Drop(Room*);
 	void ChangeParent(Entity*);
-	void Go(Room*);
-	void Open(Entity*);
+	void Go(string);
+	void Open(string);
 	void Pick(Item*);
-	void Look(Entity*);
+	void Look(string);
+	void CheckStatus();
 
 	//void Block()
 

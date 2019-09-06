@@ -11,6 +11,8 @@ Exit::Exit(const char* theName, const char* opposite_name, const char* theDesc, 
 
 	type = EXIT;
 
+	origin->container.push_back(this);
+
 }
 
 void Exit::Look() {

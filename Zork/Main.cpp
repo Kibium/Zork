@@ -34,14 +34,10 @@ int main() {
 	while (!endGame) {
 
 		getline(cin, player_input);
-
-		//The game knows what the player introduced
-
 		commands = GetCommands(player_input);
 
-		if (commands[0] == "look"){
-			cout << "An amazingly big cave" << endl;
-		}
+
+		world.GameLoop(player_input, commands);
 
 
 	}

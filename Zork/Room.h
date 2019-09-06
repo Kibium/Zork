@@ -1,5 +1,8 @@
 #pragma once
+#include <vector>
 #include "Entity.h"
+
+class Exit;
 
 
 class Room : public Entity {
@@ -9,8 +12,7 @@ public:
 	Room(const char*, const char*);
 	~Room();
 
-	void ChangeDesc();
-
+	//vector<Exit*> exits;
 	
 	bool completed;
 };

@@ -5,6 +5,7 @@ public:
 	Player(const char*, const char*, Room*);
 	~Player();
 
+	bool Look(string);
 
 
 };
