@@ -3,12 +3,10 @@
 
 Creature::Creature() {}
 
-Creature::Creature(const char* theName, const char* theDesc, Room* theRoom, int health, int gold) {
 
-	name = theName;
-	desc = theDesc;
-	parent = theRoom;
+Creature::Creature(const char* theName, const char* theDesc, Room* theRoom, int health, int gold) : Entity(theName, theDesc, (Entity*)theRoom) {
 
+	
 	type = CREATURE;
 	status = HEALTHY;
 
@@ -17,6 +15,18 @@ Creature::Creature(const char* theName, const char* theDesc, Room* theRoom, int 
 
 	//parent->container.push_back(this);
 
+}
+
+
+Creature::Creature(const char* theName, const char* theDesc, Room* room) : Entity(theName, theDesc, (Entity*)room) {
+	
+
+	hp = 25;
+	status = HEALTHY;
+	weapon = nullptr;
+	armor = nullptr;
+
+	type = PLAYER;
 }
 
 Creature::~Creature() {}
@@ -39,12 +49,12 @@ void Creature::Skill(Creature* target) {
 
 void Creature::Drop(Room* room) {
 
-	if (droppable != nullptr) {
+	/*if (droppable != nullptr) {
 
 		droppable->parent = room;
 		cout << name << " has dropped " << droppable->name << endl;
 	}
-	
+	*/
 }
 
 void Creature::Die() {
@@ -92,8 +102,12 @@ void Creature::Look(string a) {
 
 void Creature::CheckStatus() {
 
+	cout << "Name: " << name << endl;
+	
+
+
 	switch (status) {
-	case NORMAL:
+	case HEALTHY:
 		cout << "Status: Healthy" << endl;
 		break;
 	case POISONED:
@@ -102,8 +116,22 @@ void Creature::CheckStatus() {
 
 	case DEAD:
 		cout << "Status: Dead" << endl;
-
 	}
+
+	cout << "HP: " << hp << endl;
+
+	if (weapon != nullptr)
+		cout << "Attack: " << weapon->value << endl;
+	else
+		cout << "Attack: 0" << endl;
+
+	if(armor!= nullptr)
+	cout << "Armor: " << armor->value << endl;
+
+	else
+		cout << "Armor: 0" << endl;
+
+
 	
 }
 

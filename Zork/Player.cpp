@@ -3,17 +3,18 @@
 #include "Player.h"
 #include "Exit.h"
 
-Player::Player(const char* theName, const char* theDesc, Room* room) {
+//This kind of constructor took me a while to look for it, the enemies and the player's variables didn't print from the world class without this constructor.
+Player::Player(const char* theName, const char* theDesc, Room* room, int health) : Creature(theName, theDesc, room) {
 
-	name = theName;
-	desc = theDesc;
-	parent = room;
 
+	hp = health;
 	status = HEALTHY;
 	weapon = nullptr;
 	armor = nullptr;
 
 	type = PLAYER;
+
+	room->container.push_back(this);
 
 }
 
@@ -21,8 +22,13 @@ Player::~Player() {}
 
 bool Player::Look(string s) {
 
-	//cout << "You entered: " << s << endl;
-	//vector<Entity*> vect;
+	std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+
+	if (s == name) {
+		cout << desc << endl;
+		return true;
+
+	}
 
 	if (s == parent->name) {
 		cout << parent->desc << endl;
@@ -108,6 +114,47 @@ bool Player::Go(string roomName) {
 	return false;
 
 
+
+}
+
+bool Player::ListInventory() {
+
+	if (container.size() > 0) {
+		cout << "You have: " << endl;
+		for (auto i = container.begin(); i != container.end(); i++) {
+			cout << "- " << (*i)->name << endl;
+		}
+		return true;
+	}
+	else {
+
+		//sorry
+		cout << "You got nothin but dust in ya pockets" << endl;
+		return false;
+
+	}
+
+
+}
+
+bool Player::Pick(string item) {
+
+	
+
+	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
+
+		string temp = (*i)->name;
+		std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+
+		if (temp == item && (*i)->type == ITEM) {
+			container.push_back(*i);
+			cout << container.size() << endl;
+			return true;
+		}
+	}
+
+	cout << "That, sir, is unpickable" << endl;
+	return false;
 
 }
 

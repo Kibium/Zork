@@ -3,13 +3,13 @@
 
 Monster::Monster(){}
 
-Monster::Monster(const char* theName, const char* theDesc, Room* theParent, int health, int gold) {
+Monster::Monster(const char* theName, const char* theDesc, Room* theParent, int health, int gold) : Creature(theName, theDesc, theParent) {
 
 	type = CREATURE;
 
 	name = theName;
 	desc = theDesc;
-	parent = theParent;
+	parent = (Entity*)theParent;
 	
 	status = HEALTHY;
 

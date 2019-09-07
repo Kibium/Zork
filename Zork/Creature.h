@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
-#include "Item.h"
 #include "Room.h"
+#include "Item.h"
 
 using namespace std;
+
+
 
 enum Status {
 	HEALTHY,
@@ -16,6 +18,8 @@ class Creature : public Entity {
 public:
 	Creature();
 	Creature(const char*, const char*, Room*, int, int);
+	Creature(const char*, const char*, Room*);
+
 	~Creature();
 
 	void MakeObjective(Creature*);
@@ -35,12 +39,10 @@ public:
 	bool isAlive();
 
 	Creature* battle_target;
-
-	string name;
-
 	Item* weapon;
 	Item* armor;
-	Item* droppable;
+
+	string name;
 
 	Status status;
 

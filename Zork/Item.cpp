@@ -5,6 +5,10 @@ Item::Item(){}
 
 Item::Item(const char* theName, const char* theDesc, Entity* theParent, ItemType itType, int buyValue, int sellValue) {
 	type = ITEM;
+
+	pickable = true;
+	can_store = false;
+
 	name = theName;
 	desc = theDesc;
 	theParent->container.push_back(this);

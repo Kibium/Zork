@@ -114,10 +114,14 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	//Sack to put objects in
 	Item* sack = new Item("Sack", "A sack that seems to have space for everything. Makes me think about a cosmic cat from the future.", stairs, NORMAL, -1, -1);
+	sack->pickable = false;
+	sack->can_store = true;
 
 	//Hidden sanctuary chest
 
 	Item* sanc_chest = new Item("Chest", "A chest covered in dust. Seems to require a key to be opened.", sanctuary, CHEST, -1, -1);
+	sanc_chest->pickable = false;
+
 	Item* bracelet = new Item("Iron bracelet", "An iron bracelet. It seems new despite the aspect of the chest that contained it.", sanc_chest, ARMOR, 20, 15);
 	bracelet->value = 10;
 
@@ -126,11 +130,11 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	//Enemies
 
-	Monster* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor, 1, 1);
-	Monster* giant_worm = new Monster("Worm", "An enormous worm", corridor,1, 1);
-	Monster* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs, 5, 3);
-	Monster* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs, 10, 10);
-	Monster* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom, 30, 30);
+	Creature* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor, 1, 1);
+	Creature* giant_worm = new Monster("Worm", "An enormous worm", corridor,1, 1);
+	Creature* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs, 5, 3);
+	Creature* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs, 10, 10);
+	Creature* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom, 30, 30);
 
 	entities.push_back(spider);
 	entities.push_back(giant_worm);
@@ -142,10 +146,11 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	//Player
 
-	player = new Player(pName.c_str(), "You don't remember anything but one thing, you are awesome.", cave);
-	entities.push_back(player);
+	player = new Player(pName.c_str(), "You don't remember anything but one thing, you are awesome.", cave, 25);
+	entities.push_back((Entity*)player);
+	//cave->container.push_back((Entity*)player);
 
-	Item*extra = new Item("Itemu", "hello", corridor, NORMAL, -1, -1);
+	//Item*extra = new Item("Itemu", "hello", corridor, NORMAL, -1, -1);
 
 
 }
@@ -166,6 +171,25 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 	//The game knows what the player introduced
 	if (commands.size() == 1) {
+
+		if (commands[0] == "pick") {
+			cout << "What do you want to pick?" << endl;
+
+			Room* temp = (Room*)player->parent;
+			for (auto i = temp->container.begin(); i != temp->container.end(); i++) {
+				if ((*i)->type == ITEM && ((Item*)(*i))->pickable) {
+					cout << "- " << (*i)->name << endl;
+				}
+			}
+
+			string looking_at;
+			getline(cin, looking_at);
+			player->Pick(looking_at);
+		}
+
+		if (commands[0] == "inventory") {
+			player->ListInventory();
+		}
 
 		if (commands[0] == "entities") {
 			int count = 0;
@@ -191,6 +215,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 		}
 
 		if (commands[0] == "status") {
+			
 			player->CheckStatus();
 
 		}

@@ -20,7 +20,11 @@ public:
 	//Both damage or armor, depending on the type
 	int value;
 
+	bool can_store;
+	bool pickable;
+
 	int buy_value;
 	int sell_value;
 	ItemType item_type;
+
 };
