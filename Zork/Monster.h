@@ -2,7 +2,7 @@
 #include "Creature.h"
 class Monster : public Creature {
 public:
-	Monster(const char*, const char*, Room*);
+	Monster(const char*, const char*, Entity*);
 
 	void Die();
 

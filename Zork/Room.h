@@ -11,8 +11,6 @@ public:
 public:
 	Room(const char*, const char*);
 	~Room();
-
-	//vector<Exit*> exits;
 	
 	bool completed;
 };

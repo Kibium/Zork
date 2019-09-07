@@ -6,6 +6,7 @@ public:
 	~Player();
 
 	bool Look(string);
+	bool Go(string);
 
 
 };

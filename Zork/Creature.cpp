@@ -3,7 +3,7 @@
 
 Creature::Creature() {}
 
-Creature::Creature(const char* theName, const char* theDesc, Room* theRoom) {
+Creature::Creature(const char* theName, const char* theDesc, Entity* theRoom) {
 
 	name = theName;
 	desc = theDesc;
@@ -12,6 +12,8 @@ Creature::Creature(const char* theName, const char* theDesc, Room* theRoom) {
 	type = CREATURE;
 
 	status = HEALTHY;
+
+	parent->container.push_back(this);
 
 }
 
@@ -52,31 +54,33 @@ bool Creature::isAlive() {
 
 void Creature::ChangeParent(Entity* newParent) {
 	parent = newParent;
+
 }
 
-void Creature::Go(string roomName) {
+bool Creature::Go(string roomName) {
 
-	cout << "arriba aqui";
+	Room* temp;
 
 	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
-		//if ((*i)->name == roomName && (*))
-		//	ChangeParent(*i);
+		
+		if ((*i)->name == roomName && (*i)->type == EXIT) {
+		
+			parent = (Room*)(*i);
+			
+			if (type == PLAYER) {
+				cout << "You went to " << (*i)->parent->name << endl;
+			}
+
+			else {
+				cout << name << " went to " << (*i)->parent->name <<endl;
+			}
+			return true;
+		}
+		
 	}
 
-	cout << "i aqui" << endl;
-
-	/*if (type == PLAYER)
-		cout << "You went to " << parent->name << endl;
-	else
-		cout << name << " went to " << parent->name << endl;
-
-	/*if (type == PLAYER)
-		cout << "You went to " << newRoom->name << endl;
-	else
-		cout << name << " went to " << newRoom->name << endl;
-	
-	parent = newRoom;
-	*/
+	cout << "There's no such exit here." << endl;
+	return false;
 	
 }
 

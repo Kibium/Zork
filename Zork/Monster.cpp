@@ -1,11 +1,17 @@
 #include <iostream>
 #include "Monster.h"
 
-Monster::Monster(const char* theName, const char* theDesc, Room* room) {
+Monster::Monster(const char* theName, const char* theDesc, Entity* theParent) {
 
 	name = theName;
 	desc = theDesc;
-	parent = room;
+	parent = theParent;
+	//parent->container.push_back(this);
+
+	cout << name << " created" << endl;
+	//cout << "Belongs here: "<< parent->name << endl;
+
+
 
 	status = HEALTHY;
 

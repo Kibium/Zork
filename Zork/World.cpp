@@ -27,8 +27,8 @@ World::World(string wName, string pName) {
 
 	//Exits
 
-	Exit* cave_corridor = new Exit("forward", "back", "To the corridor", cave, corridor);
-	Exit* corridor_cave = new Exit("back", "forward", "To the Cave", corridor, cave);
+	Exit* cave_corridor = new Exit("forward", "back", "Exit to the corridor", cave, corridor);
+	Exit* corridor_cave = new Exit("back", "forward", "Exit to the Cave", corridor, cave);
 
 	Exit* corridor_sanctuary = new Exit("east", "west", "Marble Portal", corridor, sanctuary);
 	Exit* corridor_stairs = new Exit("west", "east", "Corner", corridor, stairs);
@@ -43,20 +43,20 @@ World::World(string wName, string pName) {
 	Exit* finalRoom_end = new Exit("forward", "back", "Insanely large door", finalRoom, end);
 	finalRoom_end->locked = true;
 
-			/*cave->neighborRooms.push_back(corridor);
+	/*cave->neighborRooms.push_back(corridor);
 
-		corridor->neighborRooms.push_back(cave);
-		corridor->neighborRooms.push_back(sanctuary);
+corridor->neighborRooms.push_back(cave);
+corridor->neighborRooms.push_back(sanctuary);
 
-		sanctuary->neighborRooms.push_back(corridor);
-		sanctuary->neighborRooms.push_back(corridor);
-		sanctuary->neighborRooms.push_back(stairs);
-		sanctuary->neighborRooms.push_back(cave); //connects with the first one. Only one way
+sanctuary->neighborRooms.push_back(corridor);
+sanctuary->neighborRooms.push_back(corridor);
+sanctuary->neighborRooms.push_back(stairs);
+sanctuary->neighborRooms.push_back(cave); //connects with the first one. Only one way
 
-		stairs->neighborRooms.push_back(sanctuary);
-		stairs->neighborRooms.push_back(finalRoom);
+stairs->neighborRooms.push_back(sanctuary);
+stairs->neighborRooms.push_back(finalRoom);
 
-		finalRoom->neighborRooms.push_back(stairs);*/
+finalRoom->neighborRooms.push_back(stairs);*/
 
 	entities.push_back(cave);
 	entities.push_back(corridor);
@@ -83,9 +83,9 @@ World::World(string wName, string pName) {
 
 	//Heling stuff
 
-	Item* herb = new Item("Mint herb", "A refreshing herb", sanctuary, NORMAL, 5, 2);
-	Item* herb2 = new Item("Mint herb", "A refreshing herb", sanctuary, NORMAL, 5, 2);
-	Item* herb3 = new Item("Mint herb", "A refreshing herb", sanctuary, NORMAL, 5, 2);
+	Item* herb = new Item("Herb", "A refreshing herb", sanctuary, NORMAL, 5, 2);
+	Item* herb2 = herb;
+	Item* herb3 = herb;
 
 
 	entities.push_back(lighter);
@@ -97,24 +97,27 @@ World::World(string wName, string pName) {
 	entities.push_back(herb3);
 
 	//Other stuff
-	Item* rock = new Item("Rock", "It's a rock. It has a cool form that remembers of a water drop.", cave, NORMAL, 1, 3);
+	Item* rock = new Item("Cool Rock", "It's a rock. It has a cool form that remembers of a water drop.", cave, NORMAL, 1, 3);
 	entities.push_back(rock);
-	cave->container.push_back(rock);
 
 	//Corridor figure
 
-	Item* figure = new Item("Old figure", "An old figure. Shaking it, you hear a metallic sound", corridor, NORMAL, -1, -1);
+	Item* figure = new Item("Figure", "An old figure. Shaking it, you hear a metallic sound", corridor, NORMAL, -1, -1);
 	entities.push_back(figure);
 
 	//Key in the corridor
 
-	Item* key = new Item("Small key", "It must open something", figure, CHEST, -1, -1);
+	Item* key = new Item("Key", "It must open something", figure, CHEST, -1, -1);
 	entities.push_back(key);
 	finalRoom_end->key = key;
+	figure->container.push_back(key);
+
+	//Sack to put objects in
+	Item* sack = new Item("Sack", "A sack that seems to have space for everything. Makes me think about a cosmic cat from the future.", stairs, NORMAL, -1, -1);
 
 	//Hidden sanctuary chest
 
-	Item* sanc_chest = new Item("Old chest", "A chest covered in dust. Seems to require a key to be opened.", sanctuary, CHEST, -1, -1);
+	Item* sanc_chest = new Item("Chest", "A chest covered in dust. Seems to require a key to be opened.", sanctuary, CHEST, -1, -1);
 	Item* bracelet = new Item("Iron bracelet", "An iron bracelet. It seems new despite the aspect of the chest that contained it.", sanc_chest, ARMOR, 20, 15);
 	bracelet->value = 10;
 
@@ -124,7 +127,7 @@ World::World(string wName, string pName) {
 	//Enemies
 
 	Monster* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor);
-	Monster* giant_worm = new Monster("Giant worm", "An enormous worm", corridor);
+	Monster* giant_worm = new Monster("Worm", "An enormous worm", corridor);
 	Monster* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs);
 	Monster* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs);
 	Monster* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom);
@@ -134,6 +137,8 @@ World::World(string wName, string pName) {
 	entities.push_back(snake);
 	entities.push_back(goblin);
 	entities.push_back(giant_goblin);
+
+
 
 	//Player
 
@@ -162,11 +167,12 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 		if (commands[0] == "help") {
 			cout << "List of available commands:" << endl;
-			cout << "- look" << endl << "- go" << "- room"<< "- status" << endl;
+			cout << "- look" << endl << "- go" << endl << "- room" << endl << "- status" << endl;
 		}
 
 		if (commands[0] == "room") {
 			cout << "You are in: " << player->parent->name << endl;
+			cout << player->parent->desc;
 
 		}
 
@@ -177,27 +183,31 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 		if (commands[0] == "look") {
 			cout << "What do you wanna look at?" << endl;
-
+			//cout << "- " << player->parent->name << endl;
 			for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++)
 				cout << "- " << (*i)->name << endl;
 
 			string looking_at;
-			cin >> looking_at;
+			getline(cin,looking_at);
 			player->Look(looking_at);
 		}
 
 		if (commands[0] == "go") {
 			cout << "Where do you want to go?" << endl;
+
 			Room* temp = (Room*)player->parent;
 			//cout << "There are " << temp->container.size() << " exits" << endl;
 			for (auto i = temp->container.begin(); i != temp->container.end(); i++) {
-				if((*i)->type == EXIT)
-					cout << "- " << (*i)->name << endl;
+				if ((*i)->type == EXIT) {
+					cout << "- " << (*i)->desc << '(' << (*i)->name << ')' << endl;
+				}
+
+
 			}
-				
+
 
 			string go_to;
-			cin >> go_to;
+			getline(cin, go_to);
 			player->Go(go_to);
 		}
 

@@ -13,6 +13,8 @@ Item::Item(const char* theName, const char* theDesc, Entity* theParent, ItemType
 
 	buy_value = buyValue;
 	sell_value = sellValue;
+
+	parent->container.push_back(this);
 	
 }
 
