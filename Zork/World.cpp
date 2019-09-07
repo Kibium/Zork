@@ -201,7 +201,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 		if (commands[0] == "help") {
 			cout << "List of available commands:" << endl;
-			cout << "- look" << endl << "- go" << endl << "- room" << endl << "- status" << endl;
+			cout << "- look" << endl << "- go" << endl << "- room" << endl << "- status" << endl<< "- pick" <<endl << "- inventory" <<endl;
 		}
 
 		if (commands[0] == "room") {

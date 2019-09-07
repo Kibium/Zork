@@ -1,3 +1,4 @@
-﻿  Player.cpp
-c:\users\gt73evr\source\repos\kibium\zork\zork\player.cpp(87): warning C4101: 'temp': variable local sin referencia
+﻿  Entity.cpp
+  World.cpp
+  Generando código...
   Zork.vcxproj -> C:\Users\GT73EVR\source\repos\Kibium\Zork\x64\Debug\Zork.exe
