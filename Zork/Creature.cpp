@@ -3,17 +3,19 @@
 
 Creature::Creature() {}
 
-Creature::Creature(const char* theName, const char* theDesc, Entity* theRoom) {
+Creature::Creature(const char* theName, const char* theDesc, Room* theRoom, int health, int gold) {
 
 	name = theName;
 	desc = theDesc;
 	parent = theRoom;
 
 	type = CREATURE;
-
 	status = HEALTHY;
 
-	parent->container.push_back(this);
+	hp = health;
+	money = gold;
+
+	//parent->container.push_back(this);
 
 }
 
@@ -103,4 +105,14 @@ void Creature::CheckStatus() {
 
 	}
 	
+}
+
+void Creature::Open(string s) {
+
+
+}
+
+void Creature::Pick(string s) {
+
+
 }

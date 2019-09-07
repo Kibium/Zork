@@ -14,8 +14,8 @@ public:
 
 	string name;
 	void GameLoop(string, vector<string>);
+	list<Entity*> entities;
 
 private:
-	list<Entity*> entities;
 	Player* player;
 };

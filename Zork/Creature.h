@@ -15,7 +15,7 @@ class Creature : public Entity {
 
 public:
 	Creature();
-	Creature(const char*, const char*, Entity*);
+	Creature(const char*, const char*, Room*, int, int);
 	~Creature();
 
 	void MakeObjective(Creature*);
@@ -26,7 +26,7 @@ public:
 	void ChangeParent(Entity*);
 	bool Go(string);
 	void Open(string);
-	void Pick(Item*);
+	void Pick(string);
 	void Look(string);
 	void CheckStatus();
 

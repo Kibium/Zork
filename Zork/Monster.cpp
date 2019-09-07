@@ -1,28 +1,36 @@
 #include <iostream>
 #include "Monster.h"
 
-Monster::Monster(const char* theName, const char* theDesc, Entity* theParent) {
+Monster::Monster(){}
+
+Monster::Monster(const char* theName, const char* theDesc, Room* theParent, int health, int gold) {
+
+	type = CREATURE;
 
 	name = theName;
 	desc = theDesc;
 	parent = theParent;
-	//parent->container.push_back(this);
-
-	cout << name << " created" << endl;
-	//cout << "Belongs here: "<< parent->name << endl;
-
-
-
+	
 	status = HEALTHY;
 
 	weapon = nullptr;
 	armor = nullptr;
 
+	hp = health;
+	money = gold;
+
+	//NOT WORKING, NAMES DON'T APPEAR
+	theParent->container.push_back(this);
+
+
+	
 }
 
+Monster::~Monster(){}
 
 
-void Monster::Die() {
+
+/*void Monster::Die() {
 
 	//Check if this works
 	Drop((Room*)parent);
@@ -33,4 +41,4 @@ void Monster::Die() {
 	status = DEAD;
 	cout << name << " has been defeated." << endl;
 
-}
+}*/

@@ -37,11 +37,15 @@ bool Player::Look(string s) {
 
 		if (temp == s && type != EXIT) {
 
+
+			cout << "Type: " << (*i)->type << endl;
+
 			cout << (*i)->desc << endl;
+
 			return true;
 		}
 
-		else if(temp == s && type == EXIT){
+		else if (temp == s && type == EXIT) {
 
 			cout << "- " << (*i)->desc << '(' << (*i)->name << ')' << endl;
 			return true;
@@ -61,14 +65,14 @@ bool Player::Look(string s) {
 		}*/
 	}
 
-	cout << "There is nothing like that in here, but I can see: " << endl;
+	cout << "I can't see such thing." << endl;
 	/*for (int i = 0; i < vect.size(); i++) {
 		cout << "- " << vect[i]->name << endl;
 	}*/
 
 
 	return false;
-	
+
 }
 
 bool Player::Go(string roomName) {
@@ -80,11 +84,20 @@ bool Player::Go(string roomName) {
 
 		if ((*i)->name == roomName && (*i)->type == EXIT) {
 
-			parent = ((Exit*)(*i))->destinationRoom;
-			cout << "You went to:" << parent->name << endl;
-			cout << parent->desc << endl;
+			if (!((Exit*)(*i))->locked) {
+				parent = ((Exit*)(*i))->destinationRoom;
+				cout << "You went to:" << parent->name << endl;
+				cout << parent->desc << endl;
 
-			return true;
+				return true;
+			}
+			else {
+				cout << "The exit is locked!" << endl;
+				return false;
+			}
+
+
+
 
 
 		}

@@ -126,11 +126,11 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	//Enemies
 
-	Monster* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor);
-	Monster* giant_worm = new Monster("Worm", "An enormous worm", corridor);
-	Monster* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs);
-	Monster* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs);
-	Monster* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom);
+	Monster* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor, 1, 1);
+	Monster* giant_worm = new Monster("Worm", "An enormous worm", corridor,1, 1);
+	Monster* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs, 5, 3);
+	Monster* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs, 10, 10);
+	Monster* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom, 30, 30);
 
 	entities.push_back(spider);
 	entities.push_back(giant_worm);
@@ -143,7 +143,9 @@ finalRoom->neighborRooms.push_back(stairs);*/
 	//Player
 
 	player = new Player(pName.c_str(), "You don't remember anything but one thing, you are awesome.", cave);
+	entities.push_back(player);
 
+	Item*extra = new Item("Itemu", "hello", corridor, NORMAL, -1, -1);
 
 
 }
@@ -165,6 +167,14 @@ void World::GameLoop(string player_input, vector<string> commands) {
 	//The game knows what the player introduced
 	if (commands.size() == 1) {
 
+		if (commands[0] == "entities") {
+			int count = 0;
+			for (auto i = entities.begin(); i != entities.end(); i++) {
+				++count;
+				cout << "Entity " << count << ':' << (*i)->name << endl;
+			}
+		}
+
 		if (commands[0] == "help") {
 			cout << "List of available commands:" << endl;
 			cout << "- look" << endl << "- go" << endl << "- room" << endl << "- status" << endl;
@@ -173,6 +183,10 @@ void World::GameLoop(string player_input, vector<string> commands) {
 		if (commands[0] == "room") {
 			cout << "You are in: " << player->parent->name << endl;
 			cout << player->parent->desc;
+
+			cout << "There are: " << endl;
+			for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++)
+				cout << "- " << (*i)->name << endl;
 
 		}
 
@@ -185,7 +199,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			cout << "What do you wanna look at?" << endl;
 			//cout << "- " << player->parent->name << endl;
 			for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++)
-				cout << "- " << (*i)->name << endl;
+				cout << "- " << (*i)->name << ' ' << endl;
 
 			string looking_at;
 			getline(cin,looking_at);
@@ -196,7 +210,6 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			cout << "Where do you want to go?" << endl;
 
 			Room* temp = (Room*)player->parent;
-			//cout << "There are " << temp->container.size() << " exits" << endl;
 			for (auto i = temp->container.begin(); i != temp->container.end(); i++) {
 				if ((*i)->type == EXIT) {
 					cout << "- " << (*i)->desc << '(' << (*i)->name << ')' << endl;
