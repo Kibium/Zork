@@ -23,7 +23,7 @@ Entity* Entity::Find(Entity* entity)
 {
 	//This supposedly returns the entity we look for
 
-	for (list<Entity*>::const_iterator it = container.begin(); it != container.cend(); ++it)
+	for (auto it = container.begin(); it != container.cend(); ++it)
 	{
 		if ((*it)->name == entity->name)
 			return *it;

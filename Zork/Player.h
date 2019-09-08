@@ -9,8 +9,10 @@ public:
 	bool Go(string);
 	bool ListInventory();
 	bool Pick(string);
+	void Battle(Creature* monster);
 
 	vector<Item*> inventory;
+
 
 
 	

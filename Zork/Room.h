@@ -11,6 +11,6 @@ public:
 public:
 	Room(const char*, const char*);
 	~Room();
-	
+
 	bool completed;
 };

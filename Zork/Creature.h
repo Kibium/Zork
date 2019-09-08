@@ -25,14 +25,14 @@ public:
 	void MakeObjective(Creature*);
 	void Attack(Creature*);
 	void Skill(Creature*);
-	void Die();
-	void Drop(Room*);
+	void Die(Creature* );
 	void ChangeParent(Entity*);
 	bool Go(string);
 	void Open(string);
 	void Pick(string);
 	void Look(string);
 	void CheckStatus();
+	void Battle();
 
 	//void Block()
 
@@ -42,11 +42,13 @@ public:
 	Item* weapon;
 	Item* armor;
 
-	string name;
-
 	Status status;
 
 	int hp;
 	int money;
+
+	bool inBattle;
+	bool turn;
+	bool aggressive;
 
 };

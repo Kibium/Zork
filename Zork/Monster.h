@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Creature.h"
-
+#include "Player.h"
 
 
 class Monster : public Creature{
@@ -10,7 +10,6 @@ public:
 	Monster(const char*, const char*, Room*, int, int);
 	~Monster();
 
-	//void Die();
 
 	Item* holdingItem;
 	

@@ -164,9 +164,30 @@ World::~World() {
 
 }
 
+void World::removeDeadNPC() {
+
+	/*int index;
+	for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
+		
+		if ((*i)->type == CREATURE && ((Creature*)(*i))->status == DEAD) {
+			player->parent->container.remove(player->parent->container.begin() + index);
+
+		}
+		++index;
+	}*/
+}
+
 void World::GameLoop(string player_input, vector<string> commands) {
 
-	//for (int i = 0; i < commands.size(); i++)
+	//removeDeadNPC();
+
+	for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
+		if ((*i)->type == CREATURE && ((Creature*)(*i))->aggressive) {
+			player->Battle((Creature*)(*i));
+		}
+			
+	}
+
 	std::transform(commands[0].begin(), commands[0].end(), commands[0].begin(), ::tolower);
 
 	//The game knows what the player introduced
@@ -255,6 +276,13 @@ void World::GameLoop(string player_input, vector<string> commands) {
 	if (commands.size() > 1) {
 		if (commands[0] == "look") {
 			player->Look(commands[1]);
+		}
+	}
+
+	Room* temp = (Room*)player->parent;
+	for (auto i = temp->container.begin(); i != temp->container.end(); i++) {
+		if ((*i)->type == CREATURE) {
+
 		}
 	}
 
