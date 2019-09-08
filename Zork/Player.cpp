@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "Player.h"
 #include "Monster.h"
+#include "Room.h"
 #include "Exit.h"
 
 //This kind of constructor took me a while to look for it, the enemies and the player's variables didn't print from the world class without this constructor.
@@ -38,7 +39,6 @@ bool Player::Look(string s) {
 	}
 
 	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
-		//vect.push_back((*i));
 		string temp = (*i)->name;
 		std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
 
@@ -46,8 +46,8 @@ bool Player::Look(string s) {
 
 			cout << (*i)->desc << endl;
 			if ((*i)->type == CREATURE && ((Creature*)(*i))->status == DEAD) {
-				
-					cout << "It's dead" << endl;
+
+				cout << "It's dead" << endl;
 
 				return true;
 			}
@@ -58,8 +58,8 @@ bool Player::Look(string s) {
 			return true;
 		}
 
-	
-		
+
+
 
 		/*if ((*i)->name == s && type == ITEM) {
 			cout << "gotcha" << endl;
@@ -104,11 +104,6 @@ bool Player::Go(string roomName) {
 				cout << "The exit is locked!" << endl;
 				return false;
 			}
-
-
-
-
-
 		}
 
 	}
@@ -150,8 +145,11 @@ bool Player::Pick(string item) {
 		std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
 
 		if (temp == item && (*i)->type == ITEM) {
+
+			(*i)->parent = this;
 			container.push_back(*i);
-			cout << container.size() << endl;
+			cout << "Picked" << endl;
+			(*i)->ChangeParent(this);
 			return true;
 		}
 	}
@@ -178,109 +176,155 @@ void Player::Battle(Creature* monster) {
 
 	while (inBattle) {
 
-		
+
 
 		if (turn) {
 			string command;
-			if (tempMonsterName == "jumping spider" || tempMonsterName == "worm") {
-				cout << "- Weapon" << endl << "- Stomp" << endl << "- Ignore" << endl << "- Item" << endl;
-				cin >> command;
-				std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+			string eetem;
 
-				if (command == "weapon") {
-					cout << "You attacked the " << monster->name << endl;
-					int damage;
+			cout << "- Weapon" << endl << "- Stomp" << endl << "- Ignore" << endl << "- Status" << endl << "- Item" << endl;
+			getline(cin, command);
+			std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
-					if (weapon == nullptr) {
-						cout << "You throw a punch" << endl;
-						damage = 2;
-					}
+			if (command == "weapon") {
+				cout << "You attacked the " << monster->name << endl;
+				int damage;
 
-					if (weapon != nullptr && monster->armor != nullptr)
-						damage = weapon->value - monster->armor->value;
-
-					if (weapon != nullptr && monster->armor == nullptr)
-						damage = weapon->value;
-
-					
-					
-					cout << "It received " << damage << " damage" << endl;
-					monster->hp -= damage;
-
-					if (monster->hp <= 0)
-						monster->hp = 0;
-
-					turn = false;
-					monster->turn = true;
+				if (weapon == nullptr) {
+					cout << "You threw a punch" << endl;
+					damage = 2;
 				}
 
-				if (command == "stomp") {
+				if (weapon != nullptr && monster->armor != nullptr)
+					damage = weapon->value - monster->armor->value;
+
+				if (weapon != nullptr && monster->armor == nullptr)
+					damage = weapon->value;
+
+
+
+				cout << "It received " << damage << " damage" << endl;
+				monster->hp -= damage;
+
+
+
+				turn = false;
+				monster->turn = true;
+			}
+
+			if (command == "stomp") {
+				if (tempMonsterName == "jumping spider" || tempMonsterName == "worm") {
+
+
 					cout << "You deployed your feed onto the bug. Now there is no bug anymore." << endl;
 					monster->hp = 0;
 					inBattle = false;
 					monster->aggressive = false;
 					turn = false;
 					monster->turn = true;
-
 				}
 
-				if (command == "ignore") {
-					cout << "You let the bug live happily." << endl;
-					inBattle = false;
-					monster->aggressive = false;
+				if (tempMonsterName == "snake") {
+					cout << "You smashed the snake with your foot" << endl;
+					cout << "It took damage, but not enough!" << endl;
 					turn = false;
 					monster->turn = true;
-
 				}
+			}
 
-				if (command == "item") {
-					ListInventory();
+			if (command == "ignore") {
+				cout << "You let the bug live happily." << endl;
+				inBattle = false;
+				monster->aggressive = false;
+				turn = false;
+				monster->turn = true;
 
-					//item
-					string eetem;
-					cin >> eetem;
-					std::transform(eetem.begin(), eetem.end(), eetem.begin(), ::tolower);
+			}
 
-					for (auto i = container.begin(); i != container.end(); i++) {
-						if ((*i)->name == "herb") {
-							cout << "The herb heals you for 30 with a mint flavor" << endl;
-							hp += 30;
-							turn = false;
-							monster->turn = true;
+			if (command == "item") {
+				ListInventory();
+				cout << "Select item: " << endl;
 
-						}
+				getline(cin, eetem);
 
-						if ((*i)->name == "cool rock") {
+				std::transform(eetem.begin(), eetem.end(), eetem.begin(), ::tolower);
+				cout << "You selected " << eetem << endl;
 
-							cout << "The rock nailed against the" << monster->name << "'s face" << endl;
-							monster->hp -= 20;
-							turn = false;
-							monster->turn = true;
+				for (auto i = container.begin(); i != container.end(); i++) {
 
-						}
+					string temp = (*i)->name;
+					std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
 
+					if (temp == "herb") {
+						cout << "The herb heals you for 30 with a mint flavor" << endl;
+						hp += 30;
+						turn = false;
+						monster->turn = true;
+						break;
 
 					}
 
+					else if (temp == "cool rock") {
+
+						cout << "The rock nailed against the " << monster->name << "'s face" << endl;
+						monster->hp -= 20;
+						turn = false;
+						monster->turn = true;
+						break;
+
+					}
+
+					else {
+						cout << "It had no effect" << endl;
+						turn = false;
+						monster->turn = true;
+						break;
+					}
+
+
 				}
 
-				
 			}
+
+			if (command == "status") {
+				CheckStatus();
+			}
+
 		}
 
-		if (monster->turn) {
+		if (monster->hp <= 0)
+			monster->hp = 0;
+
+		if (monster->turn ) {
 
 			if (monster->hp <= 0) {
 				monster->Die((Creature*)this);
 				inBattle = false;
 				monster->aggressive = false;
-				
+				break;
 			}
+
+			cout << "The " << monster->name << " attacks!" << endl;
+
+			if (monster->weapon != nullptr) {
+				int damage =  monster->weapon->value - armor->value;
+				cout << "You took " << damage << " damage" << endl;
+				hp -= damage;
+				monster->turn = false;
+				turn = true;
+
+			}
+			else {
+				cout << "But it had no weapon!" << endl;
+				monster->turn = false;
+				turn = true;
+			}
+				
 
 		}
 
 
-		
+
 	}
 
 }

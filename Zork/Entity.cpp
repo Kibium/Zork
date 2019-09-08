@@ -32,3 +32,31 @@ Entity* Entity::Find(Entity* entity)
 	return nullptr;
 }
 
+void Entity::ChangeParent(Entity* newparent) {
+	if (parent != nullptr)
+		parent->container.remove(this);
+
+	parent = newparent;
+
+	if (parent != nullptr)
+		parent->container.push_back(this);
+}
+
+void Entity::DeleteFromList(string s) {
+	int aux = 0;
+	std::cout << "To delete: " << s << endl;
+
+	for (auto it = container.begin(); it != container.end(); aux++ ) {
+		//Entity* e = *it;
+		cout << "Found: " << (*it)->name << endl;
+
+		/*if (e->name == s) {
+			it = container.erase(it);
+		}
+		else {
+			
+			++it; // move the increment to here
+		}*/
+	}
+}
+

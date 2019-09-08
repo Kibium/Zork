@@ -14,3 +14,6 @@ Room::Room(const char* theName, const char* theDesc){
 
 Room::~Room(){}
 
+void Room::deleteList() {
+
+}

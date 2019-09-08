@@ -131,7 +131,7 @@ finalRoom->neighborRooms.push_back(stairs);*/
 	//Enemies
 
 	Creature* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor, 1, 1);
-	Creature* giant_worm = new Monster("Worm", "An enormous worm", corridor,1, 1);
+	Creature* giant_worm = new Monster("Worm", "An enormous worm", corridor, 1, 1);
 	Creature* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs, 5, 3);
 	Creature* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs, 10, 10);
 	Creature* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom, 30, 30);
@@ -168,7 +168,7 @@ void World::removeDeadNPC() {
 
 	/*int index;
 	for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
-		
+
 		if ((*i)->type == CREATURE && ((Creature*)(*i))->status == DEAD) {
 			player->parent->container.remove(player->parent->container.begin() + index);
 
@@ -179,14 +179,13 @@ void World::removeDeadNPC() {
 
 void World::GameLoop(string player_input, vector<string> commands) {
 
-	//removeDeadNPC();
-
 	for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
 		if ((*i)->type == CREATURE && ((Creature*)(*i))->aggressive) {
 			player->Battle((Creature*)(*i));
 		}
-			
+
 	}
+
 
 	std::transform(commands[0].begin(), commands[0].end(), commands[0].begin(), ::tolower);
 
@@ -194,18 +193,37 @@ void World::GameLoop(string player_input, vector<string> commands) {
 	if (commands.size() == 1) {
 
 		if (commands[0] == "pick") {
-			cout << "What do you want to pick?" << endl;
+			bool once = false;
+
+			//Says if there is something pickable
+
+			bool something = false;
 
 			Room* temp = (Room*)player->parent;
+
 			for (auto i = temp->container.begin(); i != temp->container.end(); i++) {
-				if ((*i)->type == ITEM && ((Item*)(*i))->pickable) {
+
+				if ((*i)->type == ITEM && ((Item*)(*i))->pickable && (*i)->parent->name == temp->name) {
+					something = true; //Found something  pickable!
+					if (!once) {
+
+						cout << "What do you want to pick?" << endl;
+						once = true;
+
+					}
 					cout << "- " << (*i)->name << endl;
 				}
 			}
 
-			string looking_at;
-			getline(cin, looking_at);
-			player->Pick(looking_at);
+			if (something) {
+				string looking_at;
+				getline(cin, looking_at);
+				player->Pick(looking_at);
+			}
+			else
+				cout << "Nothing to pick here." << endl;
+
+			
 		}
 
 		if (commands[0] == "inventory") {
@@ -222,7 +240,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 		if (commands[0] == "help") {
 			cout << "List of available commands:" << endl;
-			cout << "- look" << endl << "- go" << endl << "- room" << endl << "- status" << endl<< "- pick" <<endl << "- inventory" <<endl;
+			cout << "- look" << endl << "- go" << endl << "- room" << endl << "- status" << endl << "- pick" << endl << "- inventory" << endl;
 		}
 
 		if (commands[0] == "room") {
@@ -236,7 +254,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 		}
 
 		if (commands[0] == "status") {
-			
+
 			player->CheckStatus();
 
 		}
@@ -245,10 +263,11 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			cout << "What do you wanna look at?" << endl;
 			//cout << "- " << player->parent->name << endl;
 			for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++)
+				if ((*i)->parent == player->parent)
 				cout << "- " << (*i)->name << ' ' << endl;
 
 			string looking_at;
-			getline(cin,looking_at);
+			getline(cin, looking_at);
 			player->Look(looking_at);
 		}
 
@@ -263,7 +282,6 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 
 			}
-
 
 			string go_to;
 			getline(cin, go_to);

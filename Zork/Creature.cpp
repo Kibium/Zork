@@ -77,8 +77,6 @@ void Creature::Die(Creature* winner) {
 
 	//Resetting target for both monster and player
 	battle_target = battle_target->battle_target = nullptr;
-
-	status = DEAD;
 }
 
 bool Creature::isAlive() {
