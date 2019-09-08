@@ -77,9 +77,11 @@ finalRoom->neighborRooms.push_back(stairs);*/
 	//Initial weapons
 
 	Item* lighter = new Item("Lighter", "It's a lighter. You can burn stuff with it.", sanctuary, WEAPON, -1, 10);
+	lighter->value = 10;
 	Item* goat = new Item("Goat", "Its a goat. It seems you like her.", sanctuary, WEAPON, -1, -1);
+	goat->value =20;
 	Item* knive = new Item("Rusty knive", "A knive that seems to break at any moment.", sanctuary, WEAPON, 10, 10);
-	knive->value = 10;
+	knive->value = 7;
 
 	//Heling stuff
 
@@ -164,17 +166,15 @@ World::~World() {
 
 }
 
-void World::removeDeadNPC() {
+void World::CheckPickedWeapons() {
 
-	/*int index;
-	for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
+	string temp = player->parent->name;
+	std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
 
-		if ((*i)->type == CREATURE && ((Creature*)(*i))->status == DEAD) {
-			player->parent->container.remove(player->parent->container.begin() + index);
+	if (!weaponsPicked) {
+		
+	}
 
-		}
-		++index;
-	}*/
 }
 
 void World::GameLoop(string player_input, vector<string> commands) {
@@ -223,7 +223,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			else
 				cout << "Nothing to pick here." << endl;
 
-			
+
 		}
 
 		if (commands[0] == "inventory") {
@@ -264,7 +264,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			//cout << "- " << player->parent->name << endl;
 			for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++)
 				if ((*i)->parent == player->parent)
-				cout << "- " << (*i)->name << ' ' << endl;
+					cout << "- " << (*i)->name << ' ' << endl;
 
 			string looking_at;
 			getline(cin, looking_at);

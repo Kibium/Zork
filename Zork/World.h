@@ -12,7 +12,8 @@ public:
 	World(string, string);
 	~World();
 	void GameLoop(string, vector<string>);
-	void removeDeadNPC();
+	void CheckPickedWeapons();
+
 
 	string name;
 	list<Entity*> entities;
@@ -20,4 +21,5 @@ public:
 
 private:
 	Player* player;
+	bool weaponsPicked;
 };

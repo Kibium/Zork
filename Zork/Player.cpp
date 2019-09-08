@@ -49,8 +49,8 @@ bool Player::Look(string s) {
 
 				cout << "It's dead" << endl;
 
-				return true;
 			}
+			return true;
 		}
 		else if (temp == s && (*i)->type == EXIT) {
 
@@ -76,9 +76,7 @@ bool Player::Look(string s) {
 	}
 
 	cout << "I can't see such thing." << endl;
-	/*for (int i = 0; i < vect.size(); i++) {
-		cout << "- " << vect[i]->name << endl;
-	}*/
+
 
 
 	return false;
@@ -96,7 +94,7 @@ bool Player::Go(string roomName) {
 
 			if (!((Exit*)(*i))->locked) {
 				parent = ((Exit*)(*i))->destinationRoom;
-				cout << "You went to:" << parent->name << endl;
+				cout << "You went to: " << parent->name << endl;
 				cout << parent->desc << endl;
 				return true;
 			}
@@ -146,11 +144,32 @@ bool Player::Pick(string item) {
 
 		if (temp == item && (*i)->type == ITEM) {
 
+			if (((Item*)(*i))->item_type == WEAPON && weapon == nullptr) {
+				(*i)->parent = this;
+				weapon = ((Item*)(*i));
+
+				cout << "Weapon equipped" << endl;
+				return true;
+			}
+
+			else if (((Item*)(*i))->item_type == ARMOR && armor == nullptr) {
+				cout << "Armor equipped" << endl;
+				(*i)->parent = this;
+				armor = ((Item*)(*i));
+				return true;
+			}
+
+			else if (weapon != nullptr) {
+				cout << "You are too happy with your" << weapon->name << " to substitute it!" << endl;
+				return false;
+			}
+
 			(*i)->parent = this;
 			container.push_back(*i);
-			cout << "Picked" << endl;
-			(*i)->ChangeParent(this);
+			cout << "Picked, and put to the inventory." << endl;
 			return true;
+
+
 		}
 	}
 
@@ -218,7 +237,6 @@ void Player::Battle(Creature* monster) {
 
 					cout << "You deployed your feed onto the bug. Now there is no bug anymore." << endl;
 					monster->hp = 0;
-					inBattle = false;
 					monster->aggressive = false;
 					turn = false;
 					monster->turn = true;
@@ -295,7 +313,7 @@ void Player::Battle(Creature* monster) {
 		if (monster->hp <= 0)
 			monster->hp = 0;
 
-		if (monster->turn ) {
+		if (monster->turn && inBattle) {
 
 			if (monster->hp <= 0) {
 				monster->Die((Creature*)this);
@@ -307,7 +325,7 @@ void Player::Battle(Creature* monster) {
 			cout << "The " << monster->name << " attacks!" << endl;
 
 			if (monster->weapon != nullptr) {
-				int damage =  monster->weapon->value - armor->value;
+				int damage = monster->weapon->value - armor->value;
 				cout << "You took " << damage << " damage" << endl;
 				hp -= damage;
 				monster->turn = false;
@@ -319,7 +337,7 @@ void Player::Battle(Creature* monster) {
 				monster->turn = false;
 				turn = true;
 			}
-				
+
 
 		}
 
