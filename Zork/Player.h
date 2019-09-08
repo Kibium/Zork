@@ -10,6 +10,9 @@ public:
 	bool ListInventory();
 	bool Pick(string);
 	void Battle(Creature* monster);
+	bool Drop(string);
+	bool Open(string);
+	//bool Put(string);
 
 	vector<Item*> inventory;
 

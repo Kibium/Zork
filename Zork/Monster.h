@@ -10,11 +10,7 @@ public:
 	Monster(const char*, const char*, Room*, int, int);
 	~Monster();
 
-
 	Item* holdingItem;
-	
-	
-
-	float item_drop_chance = 0.5;
+	float hit_chance = 6;
 
 };

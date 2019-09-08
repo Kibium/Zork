@@ -109,13 +109,13 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	//Key in the corridor
 
-	Item* key = new Item("Key", "It must open something", figure, CHEST, -1, -1);
+	Item* key = new Item("Key", "It must open something", figure, NORMAL, -1, -1);
 	entities.push_back(key);
 	finalRoom_end->key = key;
 	figure->container.push_back(key);
 
 	//Sack to put objects in
-	Item* sack = new Item("Sack", "A sack that seems to have space for everything. Makes me think about a cosmic cat from the future.", stairs, NORMAL, -1, -1);
+	Item* sack = new Item("Sack", "A sack that seems to have space for everything. Makes me think about a cosmic cat from the future.", stairs, CHEST, -1, -1);
 	sack->pickable = false;
 	sack->can_store = true;
 
@@ -132,13 +132,33 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	//Enemies
 
-	Creature* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor, 1, 1);
+	Creature* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor, 3, 1);
 	Creature* giant_worm = new Monster("Worm", "An enormous worm", corridor, 1, 1);
 	Creature* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs, 5, 3);
 	Creature* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs, 10, 10);
 	Creature* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom, 30, 30);
 
-	entities.push_back(spider);
+	//Enemies' weapons
+
+	Item* jaw = new Item("Spider's jaws", "Deploy poison on bite", spider, WEAPON, 1, -1);
+	jaw->poison = true;
+	spider->weapon = jaw;
+	jaw->value = 1;
+
+	Item* jaw2 = new Item("Snake's jaws", "Deploy poison on bite", snake, WEAPON, 1, -1);
+	jaw2->poison = true;
+	jaw2->value = 2;
+	snake->weapon = jaw2;
+
+	Item* stick = new Item("Stick", "If someone gets hit by that, it should hurt quite a bit.", goblin, WEAPON, 1, -1);
+	stick->value = 3;
+	goblin->weapon = stick;
+
+	Item* mega_stick = new Item("Mega Stick", "That's a large stick, fuck!", giant_goblin, WEAPON, 1, -1);
+	mega_stick->value = 5;
+	giant_goblin->weapon = mega_stick;
+
+	entities.push_back(spider);	
 	entities.push_back(giant_worm);
 	entities.push_back(snake);
 	entities.push_back(goblin);
@@ -286,6 +306,39 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			string go_to;
 			getline(cin, go_to);
 			player->Go(go_to);
+		}
+
+		if (commands[0] == "drop") {
+
+			if (player->container.size() > 0) {
+				cout << "What do you want to drop?" << endl;
+				player->ListInventory();
+
+				string to_drop;
+				getline(cin, to_drop);
+				player->Drop(to_drop);
+			}
+
+			else
+				cout << "Got nothing to drop." << endl;
+		}
+
+		if (commands[0] == "open") {
+
+			cout << "What do you want to open?" << endl;
+
+			for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
+
+				if ((*i)->parent == player->parent && ((Item*)(*i))->item_type == CHEST)
+					cout << "- " << (*i)->name << ' ' << endl;
+
+				if ((*i)->type == EXIT)
+					cout << "- " << (*i)->name << ' ' << endl;
+			}
+				
+			string looking_at;
+			getline(cin, looking_at);
+			player->Open(looking_at);
 		}
 
 

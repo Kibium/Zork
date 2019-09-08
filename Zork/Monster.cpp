@@ -13,8 +13,11 @@ Monster::Monster(const char* theName, const char* theDesc, Room* theParent, int 
 	
 	status = HEALTHY;
 
-	weapon = nullptr;
-	armor = nullptr;
+	Item* empty = new Item("--", "---", this, WEAPON, 0, 0);
+	Item* empty2 = new Item("--", "---", this, ARMOR, 0, 0);
+
+	weapon = empty;
+	armor = empty2;
 	aggressive = true;
 
 	hp = health;

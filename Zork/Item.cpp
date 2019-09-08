@@ -8,10 +8,13 @@ Item::Item(const char* theName, const char* theDesc, Entity* theParent, ItemType
 
 	pickable = true;
 	can_store = false;
+	poison = false;
 
 	name = theName;
 	desc = theDesc;
-	theParent->container.push_back(this);
+	if(name != "--")
+		theParent->container.push_back(this);
+
 	parent = theParent;
 	item_type = itType;
 

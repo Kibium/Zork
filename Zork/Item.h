@@ -19,6 +19,7 @@ public:
 
 	//Both damage or armor, depending on the type
 	int value;
+	bool poison;
 
 	bool can_store;
 	bool pickable;
