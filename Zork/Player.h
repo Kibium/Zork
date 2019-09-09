@@ -12,9 +12,10 @@ public:
 	void Battle(Creature* monster);
 	bool Drop(string);
 	bool Open(string);
-	//bool Put(string);
+	bool Put(string, string);
+	bool Equip(string);
 
-	vector<Item*> inventory;
+	//vector<Item*> inventory;
 
 
 

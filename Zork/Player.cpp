@@ -180,12 +180,15 @@ bool Player::Pick(string item) {
 				return false;
 			}
 
-			else if (((Item*)(*i))->item_type == NORMAL) {
+			else if (((Item*)(*i))->item_type == NORMAL || ((Item*)(*i))->item_type == CHEST) {
 
-				(*i)->parent = this;
-				container.push_back(*i);
-				cout << "Picked, and put to the inventory." << endl;
-				return true;
+				if (temp != "sack") {
+					(*i)->parent = this;
+					container.push_back(*i);
+					cout << "Picked, and put to the inventory." << endl;
+					return true;
+				}
+
 
 			}
 
@@ -260,21 +263,37 @@ void Player::Battle(Creature* monster) {
 
 				}
 
-				if (tempMonsterName != "jumping spider" && tempMonsterName != "worm") {
-					cout << "You smashed the " << monster->name << "with your foot" << endl;
-					cout << "It had no effect!" << endl;
-					turn = false;
-					monster->turn = true;
+				if (tempMonsterName == "snake" ) {
+					cout << "You smashed the " << monster->name << "'s head with your foot" << endl;
+					cout << "It got stunned and took 5 damage" << endl;
+					monster->hp -= 5;
+				}
+
+				if (tempMonsterName == "goblin" || tempMonsterName == "giant goblin") {
+					cout << "You smashed the " << tempMonsterName << "'s foot with yours!" << endl;
+					cout << "It took 2 damage and got stunned!" << endl;
+					monster->hp -= 2;
 				}
 
 			}
 
 			if (command == "ignore") {
-				cout << "You let the bug live happily." << endl;
-				inBattle = false;
-				monster->aggressive = false;
-				turn = false;
-				monster->turn = true;
+
+				if (tempMonsterName == "jumping spider" && tempMonsterName == "worm") {
+					cout << "You let the bug live happily." << endl;
+					inBattle = false;
+					monster->aggressive = false;
+					turn = false;
+					monster->turn = true;
+				}
+
+				else {
+					cout << "The " << monster->name << " won't let you ignore him!" << endl;
+					turn = false;
+					monster->turn = true;
+
+				}
+				
 
 			}
 
@@ -396,14 +415,19 @@ bool Player::Drop(string item) {
 		string temp = (*i)->name;
 		std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
 
-		if (item == temp && temp == "figure" && ((Item*)(*i))->item_type == NORMAL) {
+		if (item == temp && temp == "figure" && ((Item*)(*i))->item_type == CHEST) {
 			cout << "It broke! There was a key inside it. It lies on the floor." << endl;
 
-			auto it = (*i)->container.begin();
+
+			for (auto it = (*i)->container.begin(); it != (*i)->container.end(); it++) {
+				(*it)->parent = parent;
+				parent->container.push_back(*it);
+				container.erase(it);
+			}
+			//auto it = (*i)->container.begin();
 
 
-			(*it)->parent = parent;
-			parent->container.push_back(*it);
+
 
 			return true;
 		}
@@ -411,6 +435,8 @@ bool Player::Drop(string item) {
 		if (item == temp && (*i)->name != "--" && ((Item*)(*i))->item_type == NORMAL) {
 			cout << "You dropped " << (*i)->name << " to the floor." << endl;
 			(*i)->parent = parent;
+			container.erase(i);
+
 			return true;
 		}
 
@@ -424,6 +450,9 @@ bool Player::Drop(string item) {
 			cout << "That's too important to be dropped!" << endl;
 			return false;
 		}
+
+
+
 	}
 
 	cout << "You got nothing like that." << endl;
@@ -464,10 +493,90 @@ bool Player::Open(string item) {
 
 
 		}
+
+		if (item == temp && (*i)->type == CHEST && temp != "figure") {
+
+			bool has_something = false;
+			if ((*i)->container.size() > 0)
+				has_something = true;
+
+			if (has_something) {
+				cout << "You opened the chest and took all its content" << endl;
+				cout << "You got: " << endl;
+
+				for (auto j = (*i)->container.begin(); j != (*i)->container.end(); j++) {
+					cout << "- " << (*j)->name << endl;
+					(*j)->parent = this;
+					container.push_back(*j);
+					(*i)->container.erase(j);
+				}
+			}
+
+			else
+			{
+				cout << "Its empty." << endl;
+				return false;
+			}
+		}
 	}
 
 	cout << "You need a key" << endl;
 	return false;
+
+}
+
+bool Player::Equip(string item) {
+
+	for (auto i = container.begin(); i != container.end(); i++) {
+
+		string temp = (*i)->name;
+		std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+
+		if (((Item*)(*i))->item_type == WEAPON && temp == item) {
+			weapon = ((Item*)(*i));
+			cout << item << " equipped as weapon." << endl;
+			return true;
+
+		}
+
+		if (((Item*)(*i))->item_type == ARMOR && temp == item) {
+			armor = ((Item*)(*i));
+			cout << item << " equipped as armor." << endl;
+			return true;
+		}
+
+	}
+
+}
+
+bool Player::Put(string item, string contain) {
+
+	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
+
+		string temp = (*i)->name;
+		std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+
+		if (contain == temp) {
+
+			for (auto j = container.begin(); j != container.end(); j++) {
+
+				string temp2 = (*j)->name;
+				std::transform(temp2.begin(), temp2.end(), temp2.begin(), ::tolower);
+
+				if (temp2 == item) {
+					cout << "Found " << item << endl;
+					(*j)->parent = (*i);
+					(*i)->container.push_back(*j);
+					container.erase(j);
+					cout << "The " << item << " has been put into the " << contain << '.' << endl;
+					return true;
+				}
+
+			}
+
+		}
+
+	}
 
 }
 

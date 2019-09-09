@@ -104,7 +104,7 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	//Corridor figure
 
-	Item* figure = new Item("Figure", "An old figure. Shaking it, you hear a metallic sound", corridor, NORMAL, -1, -1);
+	Item* figure = new Item("Figure", "An old figure. Shaking it, you hear a metallic sound", corridor, CHEST, -1, -1);
 	entities.push_back(figure);
 
 	//Key in the corridor
@@ -112,7 +112,7 @@ finalRoom->neighborRooms.push_back(stairs);*/
 	Item* key = new Item("Key", "It must open something", figure, NORMAL, -1, -1);
 	entities.push_back(key);
 	finalRoom_end->key = key;
-	figure->container.push_back(key);
+	//figure->container.push_back(key);
 
 	//Sack to put objects in
 	Item* sack = new Item("Sack", "A sack that seems to have space for everything. Makes me think about a cosmic cat from the future.", stairs, CHEST, -1, -1);
@@ -134,7 +134,7 @@ finalRoom->neighborRooms.push_back(stairs);*/
 
 	Creature* spider = new Monster("Jumping spider", "A spider that can jump very high, it could be venomous.", corridor, 3, 1);
 	Creature* giant_worm = new Monster("Worm", "An enormous worm", corridor, 1, 1);
-	Creature* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs, 5, 3);
+	Creature* snake = new Monster("Snake", "Looks like a normal snake. It could be venomous", stairs, 10, 3);
 	Creature* goblin = new Monster("Goblin", "A green humanoid creature. Looks strong and unfriendly", stairs, 10, 10);
 	Creature* giant_goblin = new Monster("Giant goblin", "Its bigger than you, also stronger, probably dumber.", finalRoom, 30, 30);
 
@@ -329,7 +329,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 			for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
 
-				if ((*i)->parent == player->parent && ((Item*)(*i))->item_type == CHEST)
+				if ((*i)->parent == player->parent && ((Item*)(*i))->item_type == CHEST && (*i)->name != "Figure")
 					cout << "- " << (*i)->name << ' ' << endl;
 
 				if ((*i)->type == EXIT)
@@ -339,6 +339,106 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			string looking_at;
 			getline(cin, looking_at);
 			player->Open(looking_at);
+		}
+
+		if (commands[0] == "put") {
+
+			bool found = false;
+			bool putable = false;
+			
+			if (player->container.size() > 0) {
+				cout << "What do you want to pick?" << endl;
+				player->ListInventory();
+
+				string to_drop;
+				getline(cin, to_drop);
+
+				std::transform(to_drop.begin(), to_drop.end(), to_drop.begin(), ::tolower);
+
+
+				for (auto i = player->container.begin(); i != player->container.end(); i++) {
+
+					string temp = (*i)->name;
+					std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+
+
+					if (to_drop == temp) {
+						found = true;
+					}
+				}
+				
+				if (found) {
+
+					bool once = false;
+					
+
+					for (auto i = player->parent->container.begin(); i != player->parent->container.end(); i++) {
+
+						if ((*i)->type == ITEM && ((Item*)(*i))->item_type == CHEST) {
+							if (!once) {
+								cout << "Where do you want to place it?" << endl;
+								once = true;
+							}
+							putable = true; //Found something  putable!
+							cout << "- " << (*i)->name << endl;
+						}
+					}
+					if (putable) {
+
+						string cont;
+						getline(cin, cont);
+						player->Put(to_drop, cont);
+
+					}
+
+					else
+						cout << "You can't put that anywhere" << endl;
+					
+				}
+
+				else
+					cout << "You got nothing like that." << endl;
+
+				
+
+
+			}
+
+			else
+				cout << "You got nothing to put into something." << endl;
+
+
+		}
+
+		if (commands[0] == "equip") {
+
+			bool equipable = false;
+
+			for (auto i = player->container.begin(); i != player->container.end(); i++) {
+				if (((Item*)(*i))->item_type == WEAPON || ((Item*)(*i))->item_type == ARMOR)
+					equipable = true;
+			}
+
+			if (equipable) {
+				cout << "What will you equip?" << endl;
+
+				for (auto i = player->container.begin(); i != player->container.end(); i++) {
+					if (((Item*)(*i))->item_type == WEAPON || ((Item*)(*i))->item_type == ARMOR)
+						cout << (*i)->name;
+				}
+
+				string to_equip;
+				getline(cin, to_equip);
+
+				std::transform(to_equip.begin(), to_equip.end(), to_equip.begin(), ::tolower);
+
+				player->Equip(to_equip);
+
+			}
+
+			else
+				cout << "Nothing to equip" << endl;
+
 		}
 
 
