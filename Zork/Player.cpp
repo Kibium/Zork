@@ -326,6 +326,8 @@ void Player::Battle(Creature* monster) {
 							if (hp >= 25)
 								hp = 25;
 
+							container.erase(i);
+
 							turn = false;
 							monster->turn = true;
 							found = true;
@@ -334,8 +336,10 @@ void Player::Battle(Creature* monster) {
 
 						if (temp == "cool rock") {
 
-							cout << "The rock nailed against the " << monster->name << "'s face" << endl;
+							cout << "The rock nailed against the " << monster->name << "'s face and it took 20 damage!!" << endl;
 							monster->hp -= 20;
+							container.erase(i);
+
 							turn = false;
 							monster->turn = true;
 							found = true;
