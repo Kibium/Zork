@@ -1,6 +1,8 @@
 # Zork
 Prova d'accés Master
 
+Note: To open the game, open "x64" at the root folder, open "Release", open "Zork.exe"
+
 This game has been made as a test for entering the Advanced Programming for AAA videogames.
 It consists of 2 phases:
 
