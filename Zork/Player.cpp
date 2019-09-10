@@ -156,7 +156,10 @@ bool Player::Pick(string item) {
 			if (((Item*)(*i))->item_type == WEAPON && weapon->name == "--") {
 				(*i)->parent = this;
 				weapon = ((Item*)(*i));
-				(*i)->parent->container.push_back(weapon);
+
+				//(*i)->parent->container.push_back(weapon);
+				parent->container.erase(i);
+
 				cout << "Weapon equipped" << endl;
 				return true;
 			}
@@ -165,7 +168,8 @@ bool Player::Pick(string item) {
 				cout << "Armor equipped" << endl;
 				(*i)->parent = this;
 				armor = ((Item*)(*i));
-				(*i)->parent->container.push_back(armor);
+				//(*i)->parent->container.push_back(armor);
+				parent->container.erase(i);
 
 				return true;
 			}
@@ -185,6 +189,7 @@ bool Player::Pick(string item) {
 				if (temp != "sack") {
 					(*i)->parent = this;
 					container.push_back(*i);
+					parent->container.erase(i);
 					cout << "Picked, and put to the inventory." << endl;
 					return true;
 				}
@@ -263,7 +268,7 @@ void Player::Battle(Creature* monster) {
 
 				}
 
-				if (tempMonsterName == "snake" ) {
+				if (tempMonsterName == "snake") {
 					cout << "You smashed the " << monster->name << "'s head with your foot" << endl;
 					cout << "It got stunned and took 5 damage" << endl;
 					monster->hp -= 5;
@@ -293,7 +298,7 @@ void Player::Battle(Creature* monster) {
 					monster->turn = true;
 
 				}
-				
+
 
 			}
 
@@ -308,37 +313,46 @@ void Player::Battle(Creature* monster) {
 					std::transform(eetem.begin(), eetem.end(), eetem.begin(), ::tolower);
 					cout << "You selected " << eetem << endl;
 
+					bool found = false;
 					for (auto i = container.begin(); i != container.end(); i++) {
 
 						string temp = (*i)->name;
 						std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
 
 						if (temp == "herb") {
-							cout << "The herb heals you for 30 with a mint flavor" << endl;
-							hp += 30;
+							cout << "The herb heals you for 15 with a mint flavor" << endl;
+							hp += 15;
+
+							if (hp >= 25)
+								hp = 25;
+
 							turn = false;
 							monster->turn = true;
-							break;
+							found = true;
 
 						}
 
-						else if (temp == "cool rock") {
+						if (temp == "cool rock") {
 
 							cout << "The rock nailed against the " << monster->name << "'s face" << endl;
 							monster->hp -= 20;
 							turn = false;
 							monster->turn = true;
-							break;
+							found = true;
+
 
 						}
 
-						else {
+						if (!found) {
 							cout << "It had no effect" << endl;
 							turn = false;
 							monster->turn = true;
-							break;
 						}
+
+
 					}
+
+
 
 
 
@@ -354,6 +368,13 @@ void Player::Battle(Creature* monster) {
 
 		if (monster->hp <= 0)
 			monster->hp = 0;
+
+		if (monster->hp <= 0) {
+			monster->Die((Creature*)this);
+			inBattle = false;
+			monster->aggressive = false;
+			break;
+		}
 
 		if (monster->turn && inBattle) {
 
@@ -373,7 +394,11 @@ void Player::Battle(Creature* monster) {
 				if (monster->weapon != nullptr) {
 					//cout << "Weapon: " << monster->weapon->name << endl;
 					//cout << "shpuld attack" << endl;
-					int damage = monster->weapon->value;// -armor->value;
+					int damage = monster->weapon->value - armor->value;
+
+					if (damage <= 0)
+						damage = 0;
+
 					cout << "You took " << damage << " damage" << endl;
 					hp -= damage;
 					monster->turn = false;
@@ -419,22 +444,35 @@ bool Player::Drop(string item) {
 			cout << "It broke! There was a key inside it. It lies on the floor." << endl;
 
 
+			//Iterates the figure's container
+
 			for (auto it = (*i)->container.begin(); it != (*i)->container.end(); it++) {
+
+
 				(*it)->parent = parent;
+
+				//Places the item in the room
 				parent->container.push_back(*it);
+
+				//Deletes it from the figure
 				container.erase(it);
+
+
+
 			}
-			//auto it = (*i)->container.begin();
 
-
-
+			//Deletes the figure
+			container.erase(i);
 
 			return true;
+
 		}
 
 		if (item == temp && (*i)->name != "--" && ((Item*)(*i))->item_type == NORMAL) {
 			cout << "You dropped " << (*i)->name << " to the floor." << endl;
 			(*i)->parent = parent;
+			parent->container.push_back(*i);
+
 			container.erase(i);
 
 			return true;
@@ -510,6 +548,7 @@ bool Player::Open(string item) {
 					container.push_back(*j);
 					(*i)->container.erase(j);
 				}
+				return true;
 			}
 
 			else
@@ -564,7 +603,7 @@ bool Player::Put(string item, string contain) {
 				std::transform(temp2.begin(), temp2.end(), temp2.begin(), ::tolower);
 
 				if (temp2 == item) {
-					cout << "Found " << item << endl;
+					//cout << "Found " << item << endl;
 					(*j)->parent = (*i);
 					(*i)->container.push_back(*j);
 					container.erase(j);

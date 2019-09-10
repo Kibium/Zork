@@ -125,7 +125,7 @@ finalRoom->neighborRooms.push_back(stairs);*/
 	sanc_chest->pickable = false;
 
 	Item* bracelet = new Item("Iron bracelet", "An iron bracelet. It seems new despite the aspect of the chest that contained it.", sanc_chest, ARMOR, 20, 15);
-	bracelet->value = 10;
+	bracelet->value = 2;
 
 	entities.push_back(sanc_chest);
 	entities.push_back(bracelet);
@@ -260,7 +260,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 
 		if (commands[0] == "help") {
 			cout << "List of available commands:" << endl;
-			cout << "- look" << endl << "- go" << endl << "- room" << endl << "- status" << endl << "- pick" << endl << "- inventory" << endl;
+			cout << "- Look" << endl << "- Go" << endl << "- Room" << endl << "- Status" << endl<< "- Open" << endl << "- Pick" << endl << "- Inventory" << endl << "- Drop" << endl << "- Put" << endl << "- Equip" << endl;
 		}
 
 		if (commands[0] == "room") {
@@ -297,7 +297,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			Room* temp = (Room*)player->parent;
 			for (auto i = temp->container.begin(); i != temp->container.end(); i++) {
 				if ((*i)->type == EXIT) {
-					cout << "- " << (*i)->desc << '(' << (*i)->name << ')' << endl;
+					cout << "- " << (*i)->desc << ' (' << (*i)->name << ')' << endl;
 				}
 
 
@@ -426,6 +426,8 @@ void World::GameLoop(string player_input, vector<string> commands) {
 					if (((Item*)(*i))->item_type == WEAPON || ((Item*)(*i))->item_type == ARMOR)
 						cout << (*i)->name;
 				}
+
+				cout << endl;
 
 				string to_equip;
 				getline(cin, to_equip);
