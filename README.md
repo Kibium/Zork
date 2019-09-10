@@ -7,8 +7,8 @@ It consists of 2 phases:
 1: Defining the world and the player's name
 2: Explore the world
 
-The World has 7 connected rooms, which are:
-Cave, Corridor, Sanctuary, Corner, Stairs, Platform and Outside.
+The World has 6 connected rooms, which are:
+Cave, Corridor, Sanctuary, Stairs, Platform and Outside.
 
 To finish the game, the player has to get to the Outside room.
 
@@ -36,18 +36,16 @@ The commands will be:
 
 The optimal path to complete the game will be:
 
-- Go to the corridor.
+- Go to the Exit to the cave.
 - Fight the enemies.
 - Pick the figure.
 - Drop the figure.
 - Pick the key it contains.
-- Go to the sanctuary.
+- Go to the Marble Portal.
 - Pick the Goat (has 20 damage).
-- Go to the corridor.
-- Go to the corner.
+- Go to the Marble portal.
+- Go to the Corner.
 - Fight the enemies.
-- Go to the Stairs.
-- Fight the enemy.
 - Test the sack (if wanted).
 - Go to the platform.
 - Face the boss.
