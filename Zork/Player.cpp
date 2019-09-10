@@ -449,13 +449,15 @@ bool Player::Drop(string item) {
 			for (auto it = (*i)->container.begin(); it != (*i)->container.end(); it++) {
 
 
+
+				
 				(*it)->parent = parent;
 
 				//Places the item in the room
 				parent->container.push_back(*it);
 
 				//Deletes it from the figure
-				container.erase(it);
+				//container.erase(it);
 
 
 
@@ -463,8 +465,8 @@ bool Player::Drop(string item) {
 
 			//Deletes the figure
 			container.erase(i);
-
 			return true;
+			break;
 
 		}
 

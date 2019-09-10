@@ -297,7 +297,7 @@ void World::GameLoop(string player_input, vector<string> commands) {
 			Room* temp = (Room*)player->parent;
 			for (auto i = temp->container.begin(); i != temp->container.end(); i++) {
 				if ((*i)->type == EXIT) {
-					cout << "- " << (*i)->desc << ' (' << (*i)->name << ')' << endl;
+					cout << "- " << (*i)->desc << " (" << (*i)->name << ')' << endl;
 				}
 
 
