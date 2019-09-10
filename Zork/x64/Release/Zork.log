@@ -1,9 +1,11 @@
 ﻿  Player.cpp
-c:\users\gt73evr\source\repos\kibium\zork\zork\player.cpp(98): warning C4101: 'temp': variable local sin referencia
-c:\users\gt73evr\source\repos\kibium\zork\zork\player.cpp(212): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+c:\users\gt73evr\source\repos\kibium\zork\zork\player.cpp(100): warning C4101: 'temp': variable local sin referencia
+c:\users\gt73evr\source\repos\kibium\zork\zork\player.cpp(214): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
   Generando código
-  2 of 389 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    5 functions had inline decision re-evaluated but remain unchanged
+c:\users\gt73evr\source\repos\kibium\zork\zork\player.cpp(597): warning C4715: 'Player::Equip': no todas las rutas de acceso de control devuelven un valor
+c:\users\gt73evr\source\repos\kibium\zork\zork\player.cpp(628): warning C4715: 'Player::Put': no todas las rutas de acceso de control devuelven un valor
+  9 of 389 functions ( 2.3%) were compiled, the rest were copied from previous compilation.
+    7 functions were new in current compilation
+    24 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada
   Zork.vcxproj -> C:\Users\GT73EVR\source\repos\Kibium\Zork\x64\Release\Zork.exe

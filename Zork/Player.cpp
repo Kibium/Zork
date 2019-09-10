@@ -31,27 +31,29 @@ Player::Player(const char* theName, const char* theDesc, Room* room, int health)
 
 Player::~Player() {}
 
-bool Player::Look(string s) {
+bool Player::Look(const string &s) {
 
-	std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+	string temp = s;
 
-	if (s == name) {
+	std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+
+	if (temp == name) {
 		cout << desc << endl;
 		return true;
 
 	}
 
-	if (s == parent->name) {
+	if (temp == parent->name) {
 		cout << parent->desc << endl;
 		return true;
 
 	}
 
 	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
-		string temp = (*i)->name;
-		std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+		string temp2 = (*i)->name;
+		std::transform(temp2.begin(), temp2.end(), temp2.begin(), ::tolower);
 
-		if (temp == s && (*i)->type != EXIT) {
+		if (temp2 == s && (*i)->type != EXIT) {
 
 			cout << (*i)->desc << endl;
 			if ((*i)->type == CREATURE && ((Creature*)(*i))->status == DEAD) {
@@ -61,7 +63,7 @@ bool Player::Look(string s) {
 			}
 			return true;
 		}
-		else if (temp == s && (*i)->type == EXIT) {
+		else if (temp2 == s && (*i)->type == EXIT) {
 
 			cout << "- " << (*i)->desc << '(' << (*i)->name << ')' << endl;
 			return true;
@@ -92,7 +94,7 @@ bool Player::Look(string s) {
 
 }
 
-bool Player::Go(string roomName) {
+bool Player::Go(const string &roomName) {
 
 
 	Room* temp;
@@ -142,7 +144,7 @@ bool Player::ListInventory() {
 
 }
 
-bool Player::Pick(string item) {
+bool Player::Pick(const string &item) {
 
 
 
@@ -435,7 +437,7 @@ void Player::Battle(Creature* monster) {
 
 }
 
-bool Player::Drop(string item) {
+bool Player::Drop(const string &item) {
 
 
 
@@ -504,7 +506,7 @@ bool Player::Drop(string item) {
 
 }
 
-bool Player::Open(string item) {
+bool Player::Open(const string &item) {
 	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
 
 		string temp = (*i)->name;
@@ -570,7 +572,7 @@ bool Player::Open(string item) {
 
 }
 
-bool Player::Equip(string item) {
+bool Player::Equip(const string &item) {
 
 	for (auto i = container.begin(); i != container.end(); i++) {
 
@@ -594,7 +596,7 @@ bool Player::Equip(string item) {
 
 }
 
-bool Player::Put(string item, string contain) {
+bool Player::Put(const string &item, const string &contain) {
 
 	for (auto i = parent->container.begin(); i != parent->container.end(); i++) {
 
