@@ -34,8 +34,6 @@ public:
 	void CheckStatus();
 	void Battle();
 
-	//void Block()
-
 	bool isAlive();
 
 	Creature* battle_target;
